@@ -2,7 +2,6 @@ import logging
 import os
 import time
 
-import bugsnag
 import requests
 from tor_core.config import config
 # noinspection PyProtectedMember
@@ -217,6 +216,17 @@ def run(config):
     config.redis.delete(new_post)
 
 
+def debug_run(config):
+    """
+    Primary routine for testing.
+
+    :param config: Global config dict, supplied by tor_core.
+    :return: None.
+    """
+    print('Running...')
+    time.sleep(3)
+
+
 def main():
     """
         Console scripts entry point for OCR Bot
@@ -227,7 +237,11 @@ def main():
     bot_name = 'debug' if config.debug_mode else os.environ.get('BOT_NAME', 'bot_ocr')
 
     build_bot(bot_name, __version__, full_name='u/transcribot', log_name='ocr.log')
-    run_until_dead(run)
+
+    # In order to gain normal functionality, swap the following 2
+    # lines for which one is commented vs. uncommented.
+    run_until_dead(debug_run)
+    # run_until_dead(run)
 
 
 if __name__ == '__main__':
